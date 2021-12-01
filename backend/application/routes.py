@@ -3,7 +3,7 @@ from application.models import Tasks
 from flask import render_template, request, redirect, url_for, Response, jsonify
 
 @app.route('/create/post', methods=['POST'])
-def create_task():
+def create_post():
     package = request.json
     new_task = Tasks(description=package["description"])
     db.session.add(new_task)
@@ -11,9 +11,10 @@ def create_task():
     return Response(f"Added task with description {new_task.description}", mimetype='text/plain')
 
 @app.route('/create/comment/<int:post_id>', methods=['POST'])
-def create_comment():
+def create_comment(post_id):
     json = request.json
     new_comment = Comments(
+        text = json['text'],
         author = json['author'],
         date_posted = json['date_posted'],
         post_id = post_id
@@ -27,20 +28,25 @@ def read_all_posts():
     all_posts = Posts.query.all()
    json = {"posts": []}
    for post in all_posts:
-       comments = []
-       for comment in posts.comments:
+       comment = []
+       for comment in post.comments:
            comments.append(
                {
-                   "id": comments.id,
-                   "author": comments.author,
-                   "date_posted": comments.date_posted,
-                   "post_id": comments.posts_id,
+                   "id": comment.id,
+                   "text": comment.text,
+                   "author": comment.author,
+                   "date_posted": comment.date_posted,
+                   "post_id": comment.posts_id,
                }
            )
         json["posts"].append(
             {
-                "id": posts.id,
-                
+                "id": post.id,
+                "text": post.text,
+                "author": post.author,
+                "date_posted": post.date_posted,
+                "category": post.category,
+                "department": post.department
             }
         )
 
