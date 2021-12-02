@@ -12,6 +12,7 @@ backend = "forum-project_backend:5000"
 @app.route('/home', methods=['GET'])
 def home():
     posts = requests.get(f"http://{backend}/read/allPosts").json()["posts"]
+    comments = requests.get(f"http://{backend}/read/allPosts").json()
     return render_template('index.html', title="Home", posts=posts)
 
 @app.route('/create/post', methods=['GET','POST'])
@@ -29,7 +30,8 @@ def create_post():
                 "title": form.title.data,
                 "text": form.text.data,
                 "author": form.author.data,
-                "date_posted": form.datetime.data
+                "date_posted": form.datetime.data,
+                "category": form.category.data
             }
         )
         app.logger.info(f"Response: {response.text}")
@@ -43,13 +45,13 @@ def create_comment():
 
     json = requests.get(f"http://{backend}/read/allPosts").json()
     for post in json["posts"]:
-        form.post.choices.append((post["id"], post["name"]))
+        form.posts.choices.append((post["id"], post["text"]))
 
     if request.method == "POST":
         response = requests.post(
             f"http://{backend}/create/comment/{form.posts.data}",
             json={
-                "title": form.title.data
+                "text": form.text.data
             }
         )
         app.logger.info(f"Response: {response.text}")

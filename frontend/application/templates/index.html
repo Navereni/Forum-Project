@@ -2,34 +2,35 @@
 {% block body %}
     {% for post in posts %}
     <table>
-        <h2>{{ posts["title"] }}</h2>
+        <h2>{{ post["title"] }}</h2>
         <tr>
             <td><b>Post</b></td>
-            <td>{{ posts["text"] }}</td>
+            <td>{{ post["text"] }}</td>
         </tr>
         <tr>
             <td><b>Author</b></td>
-            <td>{{ posts["author"] }}</td>
+            <td>{{ post["author"] }}</td>
         </tr>
         <tr>
             <td><b>Date Posted</b></td>
-            <td>{{ posts["date_posted"] }}</td>
-            <tr>
+            <td>{{ post["date_posted"] }}</td>
+        <tr>
             <td><b>Category</b></td>
-            <td>{{ posts["category"] }}</td>
+            <td>{{ post["category"] }}</td>
         </tr>
-        </tr>
+        <a href="{{ url_for('update_task', id=task.id) }}">Edit</a>
+        <a href="{{ url_for('delete_task', id=task.id) }}">Delete</a>
     </table>
 
     <h2>Comments for {{ posts["title"] }}</h2>
         <table>
             <tr>
                 <td><b>Comment</b></td>
-            <td>{{ posts["text"] }}</td>
+            <td>{{ post["text"] }}</td>
             </tr>
             <tr>
                 <td><b>Author</b></td>
-            <td>{{ posts["author"] }}</td>
+            <td>{{ post["author"] }}</td>
             </tr>
         </table>
     {% endfor %}

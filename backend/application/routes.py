@@ -14,7 +14,7 @@ def create_post():
     )
     db.session.add(new_post)
     db.session.commit()
-    return f"Post '{new_post.title}' has been added"
+    return f"Post '{new_posts.title}' has been added"
 
 @app.route('/create/comment', methods=['POST'])
 def create_comment():
@@ -41,17 +41,17 @@ def read_all_posts():
                    "text": comment.text,
                    "author": comment.author,
                    "date_posted": comment.date_posted,
-                   "post_id": comment.posts_id,
+                   "posts_id": comment.posts_id,
                 }
             )
         json["posts"].append(
             {
                 "id": post.id,
+                "title": post.title,
                 "text": post.text,
                 "author": post.author,
                 "date_posted": post.date_posted,
-                "category": post.category,
-                "department": post.department
+                "category": post.category
             }
         )
     return jsonify(json)
