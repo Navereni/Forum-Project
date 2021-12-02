@@ -1,27 +1,32 @@
 from application import app, db
-from application.models import Post
+from application.models import Posts, Comments
 from flask import render_template, request, redirect, url_for, Response, jsonify
 
 @app.route('/create/post', methods=['POST'])
 def create_post():
-    package = request.json
-    new_task = Tasks(description=package["description"])
-    db.session.add(new_task)
+    json = request.json
+    new_post = Posts(
+        title = json["title"],
+        text = json["text"],
+        author = json["author"],
+        date_posted = json["date_posted"],
+        category = json["category"]
+    )
+    db.session.add(new_post)
     db.session.commit()
-    return Response(f"Added task with description {new_task.description}", mimetype='text/plain')
+    return f"Post '{new_post.title}' has been added"
 
-@app.route('/create/comment/<int:post_id>', methods=['POST'])
-def create_comment(post_id):
+@app.route('/create/comment', methods=['POST'])
+def create_comment():
     json = request.json
     new_comment = Comments(
         text = json['text'],
         author = json['author'],
-        date_posted = json['date_posted'],
         post_id = post_id
     )
-    db.session.add(new.comments)
+    db.session.add(new.comment)
     db.session.commit()
-    return f"Added: {new_comment.text} to the post."
+    return f"Added comment: {new_comment.text} to the post."
 
 @app.route('/read/allPosts', methods=['GET'])
 def read_all_posts():
@@ -49,7 +54,7 @@ def read_all_posts():
                 "department": post.department
             }
         )
-
+    return jsonify(json)
 
 
 # @app.route('/update/post/<int:id>', methods=['PUT'])

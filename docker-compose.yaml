@@ -3,14 +3,14 @@ services:
   frontend:
     build: ./frontend
     image: navereni/forum-project-frontend:latest
-    container_name: forum-project-frontend
+    container_name: forum-project_frontend
     ports:
     - target: 5000
       published: 80
   backend:
     build: ./backend
     image: navereni/forum-project-backend:latest
-    container_name: forum-project-backend
+    container_name: forum-project_backend
     environment:
       DATABASE_URI:
       CREATE_SCHEMA:

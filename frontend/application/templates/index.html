@@ -1,15 +1,25 @@
 {% extends "layout.html" %}
 {% block body %}
     {% for post in posts %}
-
-    <h1>{{ Posts["name"] }}</h1>
-    <p>
-        
-    </p>
-    
-    <h2>Comments for {{ post["name"] }}</h2>
-   
-    {% endif %}
+    <table>
+        <h2>{{ post["title"] }}</h2>
+        <tr>
+            <td><b>Post</b></td>
+            <td>{{ post["text"] }}</td>
+        </tr>
+        <tr>
+            <td><b>Author</b></td>
+            <td>{{ post["author"] }}</td>
+        </tr>
+        <tr>
+            <td><b>Date Posted</b></td>
+            <td>{{ post["date_posted"] }}</td>
+            <tr>
+            <td><b>Category</b></td>
+            <td>{{ post["category"] }}</td>
+        </tr>
+        </tr>
+    </table>
     {% endfor %}
 
 {% endblock body %}
