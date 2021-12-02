@@ -3,8 +3,10 @@
 <div class='form'>
     <form method='POST' action=''>
         {{ form.hidden_tag() }}
+        {{ form.title.label }} {{ form.title }}<br>
         {{ form.text.label }} {{ form.text }}<br>
         {{ form.author.label }} {{ form.author }}<br>
+        {{ form.type.label }} {{ form.type }}<br>
         {{ form.submit }}<br>
     </form>
 {% endblock %}

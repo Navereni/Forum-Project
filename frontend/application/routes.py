@@ -23,18 +23,19 @@ def create_post():
     json["posts"]
 
     if request.method == "POST":
-        response = request.post(
-            f"http://{backend_host}/create/post/{post_id}",
+        response = requests.post(
+            f"http://{backend}/create/post",
             json={
                 "title": form.title.data,
                 "text": form.text.data,
                 "author": form.author.data,
-                "date_posted": form.date_posted.data
+                "date_posted": form.datetime.data
             }
         )
         app.logger.info(f"Response: {response.text}")
         return redirect(url_for("home"))
   
+    return render_template("create_post.html", title="Add Post", form=form)
 
 @app.route('/create/comment', methods=['GET','POST'])
 def create_comment():
