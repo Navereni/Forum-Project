@@ -1,5 +1,5 @@
 from application import app, db
-from application.models import Tasks
+from application.models import Post
 from flask import render_template, request, redirect, url_for, Response, jsonify
 
 @app.route('/create/post', methods=['POST'])
@@ -26,19 +26,19 @@ def create_comment(post_id):
 @app.route('/read/allPosts', methods=['GET'])
 def read_all_posts():
     all_posts = Posts.query.all()
-   json = {"posts": []}
-   for post in all_posts:
-       comment = []
-       for comment in post.comments:
-           comments.append(
-               {
+    json = {"posts": []}
+    for post in all_posts:
+        comment = []
+        for comment in post.comments:
+            comments.append(
+                {
                    "id": comment.id,
                    "text": comment.text,
                    "author": comment.author,
                    "date_posted": comment.date_posted,
                    "post_id": comment.posts_id,
-               }
-           )
+                }
+            )
         json["posts"].append(
             {
                 "id": post.id,

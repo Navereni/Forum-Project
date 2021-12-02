@@ -1,6 +1,6 @@
 from werkzeug.wrappers import response
 from application import app
-from application.forms import TaskForm
+from application.forms import CreatePostForm
 from flask import render_template, request, redirect, url_for, jsonify
 import requests
 
