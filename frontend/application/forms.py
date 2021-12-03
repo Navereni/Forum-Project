@@ -19,6 +19,6 @@ class CreatePostForm(FlaskForm):
 
 class CreateCommentForm(FlaskForm):
     comment = StringField("Your Comment", validators=[DataRequired()])
-    author = StringField("Your Name", validators=[DataRequired()])
+    comment_author = StringField("Your Name", validators=[DataRequired()])
     posts = SelectField("Posts", validators=[DataRequired()], choices=[])
     submit = SubmitField("Add Comment")
