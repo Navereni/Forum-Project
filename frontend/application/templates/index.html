@@ -5,7 +5,7 @@
         <h2>{{ post["title"] }}</h2>
         <tr>
             <td><b>Post</b></td>
-            <td>{{ post["text"] }}</td>
+            <td>{{ post["post_text"] }}</td>
         </tr>
         <tr>
             <td><b>Author</b></td>
@@ -18,15 +18,14 @@
             <td><b>Category</b></td>
             <td>{{ post["category"] }}</td>
         </tr>
-        <a href="{{ url_for('update_task', id=task.id) }}">Edit</a>
-        <a href="{{ url_for('delete_task', id=task.id) }}">Delete</a>
     </table>
+    <a href="{{ url_for('update_posts', id=posts.id) }}">Edit</a>
 
     <h2>Comments for {{ posts["title"] }}</h2>
         <table>
             <tr>
                 <td><b>Comment</b></td>
-            <td>{{ post["text"] }}</td>
+            <td>{{ post["comment"] }}</td>
             </tr>
             <tr>
                 <td><b>Author</b></td>

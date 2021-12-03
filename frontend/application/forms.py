@@ -4,7 +4,7 @@ from wtforms.validators import DataRequired
 
 class CreatePostForm(FlaskForm):
     title = StringField("Your Title", validators=[DataRequired()])
-    text = StringField("Your Post", validators=[DataRequired()])
+    post_text = StringField("Your Post", validators=[DataRequired()])
     author = StringField("Your Name", validators=[DataRequired()])
     datetime = DateTimeField("Date Posted")
     category = SelectField("Category", validators=[DataRequired()],
@@ -18,7 +18,7 @@ class CreatePostForm(FlaskForm):
 
 
 class CreateCommentForm(FlaskForm):
-    text = StringField("Your Comment", validators=[DataRequired()])
+    comment = StringField("Your Comment", validators=[DataRequired()])
     author = StringField("Your Name", validators=[DataRequired()])
     posts = SelectField("Posts", validators=[DataRequired()], choices=[])
     submit = SubmitField("Add Comment")
