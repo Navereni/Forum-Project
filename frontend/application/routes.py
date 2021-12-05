@@ -1,50 +1,74 @@
 from werkzeug.wrappers import response
 from application import app
-from application.forms import TaskForm
+from application.forms import CreatePostForm, CreateCommentForm
 from flask import render_template, request, redirect, url_for, jsonify
 import requests
+from os import getenv
 
-backend_host = "todo-app_backend:5000"
+backend = "forum-project_backend:5000"
 
-@app.route('/')
-@app.route('/home')
+
+@app.route('/', methods=['GET'])
+@app.route('/home', methods=['GET'])
 def home():
-    all_tasks = requests.get(f"http://{backend_host}/read/allTasks").json()
-    app.logger.info(f"Tasks: {all_tasks}")
-    return render_template('index.html', title="Home", all_tasks=all_tasks["tasks"])
+    posts = requests.get(f"http://{backend}/read/allPosts").json()["posts"]
+    app.logger.info(posts)
+    return render_template('index.html', title="Home", posts=posts)
 
-@app.route('/create/task', methods=['GET','POST'])
-def create_task():
-    form = TaskForm()
+@app.route('/create/post', methods=['GET','POST'])
+def create_post():
+    form = CreatePostForm()
 
-    if request.method == "POST":
-        response = requests.post(f"http://{backend_host}/create/task",json={"description": form.description.data})
-        return redirect(url_for('home'))
+    json = requests.get(f"http://{backend}/read/allPosts").json()
 
-    return render_template("create_task.html", title="Add a new Task", form=form)
-
-@app.route('/update/task/<int:id>', methods=['GET','POST'])
-def update_task(id):
-    form = TaskForm()
-    task = requests.get(f"http://{backend_host}/read/task/{id}").json()
+    json["posts"]
 
     if request.method == "POST":
-        response = requests.put(f"http://{backend_host}/update/task/{id}",json={"description": form.description.data})
-        return redirect(url_for('home'))
+        response = requests.post(
+            f"http://{backend}/create/post",
+            json={
+                "title": form.title.data,
+                "date_posted": form.datetime.data,
+            }
+        )
+        app.logger.info(f"Response: {response.text}")
+        return redirect(url_for("home"))
+  
+    return render_template("create_post.html", title="Add Post", form=form)
 
-    return render_template('update_task.html', task=task, form=form)
+@app.route('/create/comment', methods=['GET','POST'])
+def create_comment():
+    form = CreateCommentForm()
 
-@app.route('/delete/task/<int:id>')
-def delete_task(id):
-    response = requests.delete(f"http://{backend_host}/delete/task/{id}")
-    return redirect(url_for('home'))
+    json = requests.get(f"http://{backend}/read/allPosts").json()
+    
+    for post in json["posts"]:
+        form.posts.choices.append((posts["id"], posts["title"]))
 
-@app.route('/complete/task/<int:id>')
-def complete_task(id):
-    response = requests.put(f"http://{backend_host}/complete/task/{id}")
-    return redirect(url_for('home'))
+    if request.method == "POST":
+        response = requests.post(
+            f"http://{backend}/create/comment/{form.posts.data}",
+            json={
+                "comment": form.comment.data,
+            }
+        )
+        app.logger.info(f"Response: {response.text}")
+        return redirect(url_for("home"))
 
-@app.route('/incomplete/task/<int:id>')
-def incomplete_task(id):
-    response = requests.put(f"http://{backend_host}/incomplete/task/{id}")
-    return redirect(url_for('home'))
+    return render_template("create_comment.html", title="Add Comment", form=form)
+
+# @app.route('/update/posts', methods=['GET','POST'])
+# def update_post(id):
+#     form = CreatePostForm()
+#     post = requests.get(f"http://{backend}/update/posts").json()
+
+#     if request.method == "POST":
+#         response = requests.put(f"http://{backend}/update/posts",json={"text": form.post_text.data})
+#         return redirect(url_for('home'))
+
+#     return render_template('update_post.html', post=post, form=form)
+
+# @app.route('/delete/task/<int:id>')
+# def delete_task(id):
+#     response = requests.delete(f"http://{backend}/delete/task/{id}")
+#     return redirect(url_for('home'))

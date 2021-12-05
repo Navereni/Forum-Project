@@ -1,6 +1,13 @@
 from application import db
+from datetime import datetime
 
-class Tasks(db.Model):
+class Posts(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    description = db.Column(db.String(30), nullable=False)
-    completed = db.Column(db.Boolean, nullable=False, default=False)
+    title = db.Column(db.String(300), nullable=False)
+    date_posted = db.Column(db.DateTime, nullable=False, default=datetime.now())
+    comments = db.relationship('Comments', backref='posts')
+
+class Comments(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    content = db.Column(db.String(160), nullable=False)
+    posts_id = db.Column(db.Integer, db.ForeignKey('post.id'), nullable=False)
