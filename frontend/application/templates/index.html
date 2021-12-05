@@ -4,34 +4,15 @@
     <table>
         <h2>{{ post["title"] }}</h2>
         <tr>
-            <td><b>Post</b></td>
-            <td>{{ post["post_text"] }}</td>
-        </tr>
-        <tr>
-            <td><b>Author</b></td>
-            <td>{{ post["author"] }}</td>
-        </tr>
-        <tr>
             <td><b>Date Posted</b></td>
             <td>{{ post["date_posted"] }}</td>
+    </table>
+
+    <table>
         <tr>
-            <td><b>Category</b></td>
-            <td>{{ post["category"] }}</td>
+            <td><b>Comment</b></td>
+            <td>{{ post["content"] }}</td>
         </tr>
     </table>
-    <a href="{{ url_for('update_post', id=posts.id) }}">Edit</a>
-
-    <h2>Comments for {{ post["title"] }}</h2>
-        <table>
-            <tr>
-                <td><b>Comment</b></td>
-            <td>{{ post["comment"] }}</td>
-            </tr>
-            <tr>
-                <td><b>Author</b></td>
-            <td>{{ post["comment_author"] }}</td>
-            </tr>
-        </table>
     {% endfor %}
-
 {% endblock body %}

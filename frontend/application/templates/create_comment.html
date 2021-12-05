@@ -1,12 +1,11 @@
 {% extends "layout.html" %}
 {% block body %}
-<div class='form'>
-    <form method='POST' action=''>
+
+    <form method='POST'>
         {{ form.hidden_tag() }}
         {{ form.comment.label }} {{ form.comment }}<br>
-        {{ form.comment_author.label }} {{ form.comment_author }}<br>
         {{ form.posts.label }} {{ form.posts }}<br>
         {{ form.submit }}<br>
     </form>
+
 {% endblock %}
-</div>

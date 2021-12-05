@@ -28,10 +28,7 @@ def create_post():
             f"http://{backend}/create/post",
             json={
                 "title": form.title.data,
-                "post_text": form.post_text.data,
-                "author": form.author.data,
                 "date_posted": form.datetime.data,
-                "category": form.category.data
             }
         )
         app.logger.info(f"Response: {response.text}")
@@ -44,14 +41,15 @@ def create_comment():
     form = CreateCommentForm()
 
     json = requests.get(f"http://{backend}/read/allPosts").json()
+    
     for post in json["posts"]:
-        form.posts.choices.append((post["id"], post["title"]))
+        form.posts.choices.append((posts["id"], posts["title"]))
 
     if request.method == "POST":
         response = requests.post(
             f"http://{backend}/create/comment/{form.posts.data}",
             json={
-                "comment": form.comment.data
+                "comment": form.comment.data,
             }
         )
         app.logger.info(f"Response: {response.text}")
@@ -59,16 +57,16 @@ def create_comment():
 
     return render_template("create_comment.html", title="Add Comment", form=form)
 
-@app.route('/update/posts', methods=['GET','POST'])
-def update_post(id):
-    form = CreatePostForm()
-    post = requests.get(f"http://{backend}/update/posts").json()
+# @app.route('/update/posts', methods=['GET','POST'])
+# def update_post(id):
+#     form = CreatePostForm()
+#     post = requests.get(f"http://{backend}/update/posts").json()
 
-    if request.method == "POST":
-        response = requests.put(f"http://{backend}/update/posts",json={"text": form.post_text.data})
-        return redirect(url_for('home'))
+#     if request.method == "POST":
+#         response = requests.put(f"http://{backend}/update/posts",json={"text": form.post_text.data})
+#         return redirect(url_for('home'))
 
-    return render_template('update_post.html', post=post, form=form)
+#     return render_template('update_post.html', post=post, form=form)
 
 # @app.route('/delete/task/<int:id>')
 # def delete_task(id):

@@ -7,10 +7,7 @@ def create_post():
     json = request.json
     new_post = Posts(
         title = json["title"],
-        post_text = json["post_text"],
-        author = json["author"],
         date_posted = json["date_posted"],
-        category = json["category"]
     )
     db.session.add(new_post)
     db.session.commit()
@@ -21,12 +18,11 @@ def create_comment():
     json = request.json
     new_comment = Comments(
         comment = json['comment'],
-        comment_author = json['comment_author'],
         post_id = post_id
-    )
-    db.session.add(new.comment)
+     ) 
+    db.session.add(new_comment)
     db.session.commit()
-    return f"Added comment: {new_comment.text} to the post."
+    return f"Added comment: {new_comment.comment} to the post."
 
 @app.route('/read/allPosts', methods=['GET'])
 def read_all_posts():
@@ -38,34 +34,29 @@ def read_all_posts():
             comments.append(
                 {
                    "id": comment.id,
-                   "text": comment.comment,
-                   "author": comment.comment_author,
-                   "date_posted": comment.date_posted,
-                   "posts_id": comment.posts_id,
+                   "comment": comment.content,
+                   "comment_id": comment.comment_id,
                 }
             )
         json["posts"].append(
             {
                 "id": post.id,
                 "title": post.title,
-                "post_text": post.post_text,
-                "author": post.author,
                 "date_posted": post.date_posted,
-                "category": post.category
             }
         )
     return jsonify(json)
 
 
 
-@app.route('/update/posts', methods=['PUT'])
-def update_post(id):
-    json = request.json
-    post = Posts.query.get(id)
+# @app.route('/update/posts', methods=['PUT'])
+# def update_post(id):
+#     json = request.json
+#     post = Posts.query.get(id)
 
-    post.text = json['text']
-    db.session.commit()
-    return Response(f"Updated post (ID: {id}) with description {post.post_text}", mimetype='text/plain')
+#     post.text = json['text']
+#     db.session.commit()
+#     return Response(f"Updated post (ID: {id}) with description {post.post_text}", mimetype='text/plain')
 
 # @app.route('/delete/post/<int:id>', methods=['DELETE'])
 # def delete_task(id):
